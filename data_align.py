@@ -7,7 +7,42 @@ import data_rw
 class DataAlign:
     def __init__(self):
         pass
-
+    
+    # 去除没有重跑厚度和轧制力的数据行
+    def datas_cleasing(processed_datas):
+        batch_num = []
+        time = []
+        thickness_average = []
+        roll_length = []
+        speed = []
+        meter = []
+        gapDR = []
+        gapOP = []
+        MES_pressureDR = []
+        MES_pressureOP = []
+        thickness_average_second = []
+        index = 0
+        for i in range(len(processed_datas[0])):
+            if((float(processed_datas[8][i]) == 0.0) 
+               | (float(processed_datas[9][i]) == 0.0) 
+               | (float(processed_datas[10][i]) == 0.0)):
+                continue
+            else:
+                batch_num.append(processed_datas[0][i])
+                time.append(processed_datas[1][i])
+                thickness_average.append(processed_datas[2][i])
+                roll_length.append(processed_datas[3][i])
+                speed.append(processed_datas[4][i])
+                meter.append(processed_datas[5][i])
+                gapDR.append(processed_datas[6][i])
+                gapOP.append(processed_datas[7][i])
+                MES_pressureDR.append(processed_datas[8][i])
+                MES_pressureOP.append(processed_datas[9][i])
+                thickness_average_second.append(processed_datas[10][i])
+        return [batch_num, time, thickness_average, roll_length, 
+                speed, meter, gapDR, gapOP, MES_pressureDR,
+                MES_pressureOP, thickness_average_second]
+    
     # 初跑测厚仪数据与MES数据对齐
     def thick_MES_align(filepath_thick_first, filepath_MES, save_filepath):
         datarw = data_rw.DataRW
@@ -158,6 +193,8 @@ class DataAlign:
                     radio = (batch_datas_first_discarded[3][i]-thickness_datas_second[3][j-1])/(thickness_datas_second[3][j] - thickness_datas_second[3][j-1])
                     batch_datas_first_discarded[10][i] = radio*(thickness_datas_second[2][j] - thickness_datas_second[2][j-1]) + thickness_datas_second[2][j-1]
                     break
+        # 3. 数据清洗
+        batch_datas_first_discarded = DataAlign.datas_cleasing(batch_datas_first_discarded)
         # 数据存储
         datarw.data_writing_align_second(batch_datas_first_discarded, save_filepath)
         return batch_datas_first_discarded
