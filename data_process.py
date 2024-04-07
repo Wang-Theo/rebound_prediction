@@ -9,7 +9,7 @@ import data_path
 if __name__ == '__main__':
     datarw = data_rw.DataRW
 
-    # 初跑测厚仪数据与MES数据对齐
+    # 1. 初跑测厚仪数据与MES数据对齐
     # 1912
     thickness_datas_first_1912 = data_align.DataAlign.thick_MES_align(data_path.filepath_thick_first_1912, 
                                                                     data_path.filepath_MES_1912, 
@@ -74,3 +74,13 @@ if __name__ == '__main__':
                                     thickness_datas_first_1432[3],thickness_datas_first_1432[4],thickness_datas_first_1432[5],
                                     thickness_datas_first_1432[6],thickness_datas_first_1432[7],thickness_datas_first_1432[8],
                                     thickness_datas_first_1432[9], 24.0)
+
+    # 2. 重跑数据与初跑数据对齐
+    processed_data_1912 = data_align.DataAlign.thick_first_second(thickness_datas_first_1912, data_path.filepath_thick_second_1912, 3000.0, data_path.filepath_thick_processed_1912)
+    processed_data_0942 = data_align.DataAlign.thick_first_second(thickness_datas_first_0942, data_path.filepath_thick_second_0942, 300.0, data_path.filepath_thick_processed_0942)
+    processed_data_1221 = data_align.DataAlign.thick_first_second(thickness_datas_first_1221, data_path.filepath_thick_second_1221, 5000.0, data_path.filepath_thick_processed_1221)
+    processed_data_1222 = data_align.DataAlign.thick_first_second(thickness_datas_first_1222, data_path.filepath_thick_second_1222, 5000.0, data_path.filepath_thick_processed_1222)
+    processed_data_2432 = data_align.DataAlign.thick_first_second(thickness_datas_first_2432, data_path.filepath_thick_second_2432, 3000.0, data_path.filepath_thick_processed_2432)
+    processed_data_1772 = data_align.DataAlign.thick_first_second(thickness_datas_first_1772, data_path.filepath_thick_second_1772, 2000.0, data_path.filepath_thick_processed_1772)
+    processed_data_1431 = data_align.DataAlign.thick_first_second(thickness_datas_first_1431, data_path.filepath_thick_second_1431, 3000.0, data_path.filepath_thick_processed_1431)
+    processed_data_1432 = data_align.DataAlign.thick_first_second(thickness_datas_first_1432, data_path.filepath_thick_second_1432, 15000.0, data_path.filepath_thick_processed_1432)

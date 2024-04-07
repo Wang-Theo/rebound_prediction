@@ -50,7 +50,7 @@ class DataRW:
         return [MES_time, MES_speed, MES_pressureDR, MES_pressureOP]
     
     # 将数据保存到新的csv文件
-    def data_writing(datas_needed, save_file_path):
+    def data_writing_align_frist(datas_needed, save_file_path):
         # 创建空的DataFrame
         df = pd.DataFrame(columns=['batch_num', 'time', 'thickness_average', 'roll_length', 
                                     'speed', 'meter', 'gapDR', 'gapOP',
@@ -69,6 +69,30 @@ class DataRW:
         df['gapOP'] = datas_needed[7]
         df['MES_pressureDR'] = datas_needed[8]
         df['MES_pressureOP'] = datas_needed[9]
+        # 保存为csv文件
+        if not os.path.exists(save_file_path):
+            df.to_csv(save_file_path, mode='a', index=None)
+        else:
+            df.to_csv(save_file_path, mode='a', index=None, header=False)
+
+    # 将数据保存到新的csv文件
+    def data_writing_align_second(datas_needed, save_file_path):
+        # 创建空的DataFrame
+        df = pd.DataFrame(columns=['batch_num', 'time', 'thickness_average', 'roll_length', 
+                                    'speed', 'meter', 'gapDR', 'gapOP',
+                                    'MES_pressureDR', 'MES_pressureOP', 'thickness_average_second'])
+        # 将列表数据写入列
+        df['batch_num'] = datas_needed[0]
+        df['time'] = datas_needed[1]
+        df['thickness_average'] = datas_needed[2]
+        df['roll_length'] = datas_needed[3]
+        df['speed'] = datas_needed[4]
+        df['meter'] = datas_needed[5]
+        df['gapDR'] = datas_needed[6]
+        df['gapOP'] = datas_needed[7]
+        df['MES_pressureDR'] = datas_needed[8]
+        df['MES_pressureOP'] = datas_needed[9]
+        df['thickness_average_second'] = datas_needed[10]
         # 保存为csv文件
         if not os.path.exists(save_file_path):
             df.to_csv(save_file_path, mode='a', index=None)

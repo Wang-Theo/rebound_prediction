@@ -8,6 +8,7 @@ class DataAlign:
     def __init__(self):
         pass
 
+    # 初跑测厚仪数据与MES数据对齐
     def thick_MES_align(filepath_thick_first, filepath_MES, save_filepath):
         datarw = data_rw.DataRW
 
@@ -105,6 +106,59 @@ class DataAlign:
                 j+=1
 
         # 数据存储
-        datarw.data_writing(thickness_datas_first_1912, save_filepath)
+        datarw.data_writing_align_frist(thickness_datas_first_1912, save_filepath)
 
         return thickness_datas_first_1912
+    
+    # 重跑数据与初跑数据对齐
+    # 初跑的卷尾是重跑的卷头，重跑的尾部废弃26米
+    def thick_first_second(batch_datas_first, filepath_thick_second, meter_discard, save_filepath):
+        datarw = data_rw.DataRW
+        # 数据读取
+        thickness_datas_second = datarw.thicktester_data_reading(filepath_thick_second)
+
+        # 初跑：卷长[3]
+        # 重跑：卷长[3]，厚度平均值[2]
+        # 1. 初跑数据去除废弃料
+        # 1) 初跑头部废弃26米
+        batch_datas_first_ = []
+        head_discard_index = 0
+        for i in range(len(batch_datas_first[0])):
+            if(batch_datas_first[3][i]>26000.0):
+                head_discard_index = i
+                break
+        for i in range(len(batch_datas_first)):
+            batch_datas_first_.append(batch_datas_first[i][head_discard_index:])
+        for i in range(len(batch_datas_first_[0])):
+            batch_datas_first_[3][i] = batch_datas_first_[3][i] - 26000.0
+        # 2) 初跑尾部废弃工人所给米数
+        batch_datas_first_discarded = []
+        end_index = 0
+        length = batch_datas_first_[3][-1]
+        for i in range(len(batch_datas_first_[0])):
+            if((length - batch_datas_first_[3][i])<meter_discard):
+                end_index = i-1
+                break
+        for i in range(len(batch_datas_first_)):
+            batch_datas_first_discarded.append(batch_datas_first_[i][:end_index])
+
+        #! 卷长没清零
+        if(thickness_datas_second[3][0] > 10000):
+            start_meter = thickness_datas_second[3][0]
+            for i in range(len(thickness_datas_second[3])):
+                thickness_datas_second[3][i] = thickness_datas_second[3][i] - start_meter
+
+        # 2. 按照卷长对齐
+        batch_datas_first_discarded.append([])
+        for i in range(len(batch_datas_first_discarded[0])):
+            batch_datas_first_discarded[10].append(0)
+        for i in range(len(batch_datas_first_discarded[3])):
+            for j in range(len(thickness_datas_second[3])):
+                if(thickness_datas_second[3][j] > batch_datas_first_discarded[3][i]):
+                    radio = (batch_datas_first_discarded[3][i]-thickness_datas_second[3][j-1])/(thickness_datas_second[3][j] - thickness_datas_second[3][j-1])
+                    batch_datas_first_discarded[10][i] = radio*(thickness_datas_second[2][j] - thickness_datas_second[2][j-1]) + thickness_datas_second[2][j-1]
+                    break
+        # 数据存储
+        datarw.data_writing_align_second(batch_datas_first_discarded, save_filepath)
+        return batch_datas_first_discarded
+        
