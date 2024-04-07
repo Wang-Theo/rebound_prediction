@@ -46,3 +46,5 @@ filepath_MES_1432 = "./datas/first_round/MES/MES_E3N2BC1432.CSV"
 save_filepath_1432 = "./datas/first_round/datas_aligned/A_E3N2BC1432.csv"
 filepath_thick_second_1432 = "./datas/second_round/sec_E3N2BC1432.csv"
 filepath_thick_processed_1432 = "./datas/second_round/processed/processed_E3N2BC1432.csv"
+
+filepath_thick_processed_all = "./datas/second_round/processed/processed_all.csv"
