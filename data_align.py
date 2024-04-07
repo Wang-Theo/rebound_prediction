@@ -147,7 +147,7 @@ class DataAlign:
     
     # 重跑数据与初跑数据对齐
     # 初跑的卷尾是重跑的卷头，重跑的尾部废弃26米
-    def thick_first_second(batch_datas_first, filepath_thick_second, meter_discard, save_filepath):
+    def thick_first_second(batch_datas_first, filepath_thick_second, meter_discard, save_filepath, time_gap):
         datarw = data_rw.DataRW
         # 数据读取
         thickness_datas_second = datarw.thicktester_data_reading(filepath_thick_second)
@@ -195,6 +195,9 @@ class DataAlign:
                     break
         # 3. 数据清洗
         batch_datas_first_discarded = DataAlign.datas_cleasing(batch_datas_first_discarded)
+        batch_datas_first_discarded.append([])
+        for i in range(len(batch_datas_first_discarded[0])):
+            batch_datas_first_discarded[11].append(time_gap)
         # 数据存储
         datarw.data_writing_align_second(batch_datas_first_discarded, save_filepath)
         return batch_datas_first_discarded
