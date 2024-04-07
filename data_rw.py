@@ -39,8 +39,8 @@ class DataRW:
         # 各所需数据的表头
         MES_time_index = dataColumn.index("Datetime") # 时间
         MES_speed_index = dataColumn.index("LAACA_PR001") # 辊压速度
-        MES_pressureDR_index = dataColumn.index("LAACA_PR002") # 主轧传动侧主缸压力(t)
-        MES_pressureOP_index = dataColumn.index("LAACA_PR003") # 主轧操作侧主缸压力(t)
+        MES_pressureDR_index = dataColumn.index("LAACA_PR004") # 主轧传动侧主缸压力(t)
+        MES_pressureOP_index = dataColumn.index("LAACA_PR005") # 主轧操作侧主缸压力(t)
         # 各所需数据表头的数据
         MES_time = datas[dataColumn[MES_time_index]].values
         MES_speed = datas[dataColumn[MES_speed_index]].values
@@ -52,20 +52,23 @@ class DataRW:
     # 将数据保存到新的csv文件
     def data_writing(datas_needed, save_file_path):
         # 创建空的DataFrame
-        df = pd.DataFrame(columns=['批次膜卷号', '时间', '厚度平均值', '卷长', 
-                                   '辊压速度(m/min)', '辊压记米(m)', '主轧传动侧主缸辊缝(um)', 
-                                   '主轧操作侧主缸辊缝(um)', '主轧传动侧主缸压力(t)', '主轧操作侧主缸压力(t)'])
+        df = pd.DataFrame(columns=['batch_num', 'time', 'thickness_average', 'roll_length', 
+                                    'speed', 'meter', 'gapDR', 'gapOP',
+                                    'MES_pressureDR', 'MES_pressureOP'])
+        # df = pd.DataFrame(columns=['批次膜卷号', '时间', '厚度平均值', '卷长', 
+        #                            '辊压速度(m/min)', '辊压记米(m)', '主轧传动侧主缸辊缝(um)', 
+        #                            '主轧操作侧主缸辊缝(um)', '主轧传动侧主缸压力(t)', '主轧操作侧主缸压力(t)'])
         # 将列表数据写入列
-        df['批次膜卷号'] = datas_needed[0]
-        df['时间'] = datas_needed[1]
-        df['厚度平均值'] = datas_needed[2]
-        df['卷长'] = datas_needed[3]
-        df['辊压速度(m/min)'] = datas_needed[4]
-        df['辊压记米(m)'] = datas_needed[5]
-        df['主轧传动侧主缸辊缝(um)'] = datas_needed[6]
-        df['主轧操作侧主缸辊缝(um)'] = datas_needed[7]
-        df['主轧传动侧主缸压力(t)'] = datas_needed[8]
-        df['主轧操作侧主缸压力(t)'] = datas_needed[9]
+        df['batch_num'] = datas_needed[0]
+        df['time'] = datas_needed[1]
+        df['thickness_average'] = datas_needed[2]
+        df['roll_length'] = datas_needed[3]
+        df['speed'] = datas_needed[4]
+        df['meter'] = datas_needed[5]
+        df['gapDR'] = datas_needed[6]
+        df['gapOP'] = datas_needed[7]
+        df['MES_pressureDR'] = datas_needed[8]
+        df['MES_pressureOP'] = datas_needed[9]
         # 保存为csv文件
         if not os.path.exists(save_file_path):
             df.to_csv(save_file_path, mode='a', index=None)
