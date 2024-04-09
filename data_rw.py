@@ -100,3 +100,62 @@ class DataRW:
             df.to_csv(save_file_path, mode='a', index=None)
         else:
             df.to_csv(save_file_path, mode='a', index=None, header=False)
+
+    # 分卷尾卷首，将数据保存到新的csv文件
+    def data_writing_head_back(datas_needed, save_file_path_head, save_file_path_back):
+        datas_head = []
+        datas_back = []
+        for i in range(len(datas_needed[0])):
+            if(datas_needed[3][i]>1000000.0):
+                divide_index = i
+                break
+        for i in range(len(datas_needed)):
+            datas_head.append(datas_needed[i][:divide_index])
+            datas_back.append(datas_needed[i][divide_index:])
+        # 头部：创建空的DataFrame
+        df_head = pd.DataFrame(columns=['batch_num', 'time', 'thickness_average', 'roll_length', 
+                                    'speed', 'meter', 'gapDR', 'gapOP',
+                                    'MES_pressureDR', 'MES_pressureOP', 'thickness_average_second', 
+                                    'time_gap'])
+        # 将列表数据写入列
+        df_head['batch_num'] = datas_head[0]
+        df_head['time'] = datas_head[1]
+        df_head['thickness_average'] = datas_head[2]
+        df_head['roll_length'] = datas_head[3]
+        df_head['speed'] = datas_head[4]
+        df_head['meter'] = datas_head[5]
+        df_head['gapDR'] = datas_head[6]
+        df_head['gapOP'] = datas_head[7]
+        df_head['MES_pressureDR'] = datas_head[8]
+        df_head['MES_pressureOP'] = datas_head[9]
+        df_head['thickness_average_second'] = datas_head[10]
+        df_head['time_gap'] = datas_head[11]
+        # 保存为csv文件
+        if not os.path.exists(save_file_path_head):
+            df_head.to_csv(save_file_path_head, mode='a', index=None)
+        else:
+            df_head.to_csv(save_file_path_head, mode='a', index=None, header=False)
+
+        # 尾部：创建空的DataFrame
+        df_back = pd.DataFrame(columns=['batch_num', 'time', 'thickness_average', 'roll_length', 
+                                    'speed', 'meter', 'gapDR', 'gapOP',
+                                    'MES_pressureDR', 'MES_pressureOP', 'thickness_average_second', 
+                                    'time_gap'])
+        # 将列表数据写入列
+        df_back['batch_num'] = datas_back[0]
+        df_back['time'] = datas_back[1]
+        df_back['thickness_average'] = datas_back[2]
+        df_back['roll_length'] = datas_back[3]
+        df_back['speed'] = datas_back[4]
+        df_back['meter'] = datas_back[5]
+        df_back['gapDR'] = datas_back[6]
+        df_back['gapOP'] = datas_back[7]
+        df_back['MES_pressureDR'] = datas_back[8]
+        df_back['MES_pressureOP'] = datas_back[9]
+        df_back['thickness_average_second'] = datas_back[10]
+        df_back['time_gap'] = datas_back[11]
+        # 保存为csv文件
+        if not os.path.exists(save_file_path_back):
+            df_back.to_csv(save_file_path_back, mode='a', index=None)
+        else:
+            df_back.to_csv(save_file_path_back, mode='a', index=None, header=False)

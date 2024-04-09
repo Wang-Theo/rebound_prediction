@@ -48,3 +48,5 @@ filepath_thick_second_1432 = "./datas/second_round/sec_E3N2BC1432.csv"
 filepath_thick_processed_1432 = "./datas/second_round/processed/processed_E3N2BC1432.csv"
 
 filepath_thick_processed_all = "./datas/second_round/processed/processed_all.csv"
+filepath_thick_processed_head = "./datas/second_round/processed/processed_head.csv"
+filepath_thick_processed_back = "./datas/second_round/processed/processed_back.csv"

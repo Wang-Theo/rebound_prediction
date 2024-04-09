@@ -37,4 +37,6 @@ if __name__ == '__main__':
     # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1772, '1772')
     # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1431, '1431')
     # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1432, '1432')
-    LearningModel.correlation_analysis(data_path.filepath_thick_processed_all, '_all')
+    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_all, '_all')
+    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_head, '_head')
+    LearningModel.correlation_analysis(data_path.filepath_thick_processed_back, '_back')
