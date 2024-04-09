@@ -27,16 +27,3 @@ class LearningModel:
                     cmap='coolwarm_r',  # 设置热力图颜色
                     )
         plt.savefig("./corralation_images/rebound_prediction_correlation" +name +".png",dpi=1000) # 保存图片
-
-if __name__ == '__main__':
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1912, '1912')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_0942, '0942')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1221, '1221')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1222, '1222')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_2432, '2432')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1772, '1772')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1431, '1431')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_1432, '1432')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_all, '_all')
-    # LearningModel.correlation_analysis(data_path.filepath_thick_processed_head, '_head')
-    LearningModel.correlation_analysis(data_path.filepath_thick_processed_back, '_back')

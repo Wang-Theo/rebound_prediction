@@ -13,3 +13,9 @@
 ## 大规模数采实验 - 数据集
 <img src="./images/experiment_timetable.png" width = "600" alt="实验安排表格"/>
 <img src="./images/experiment_timeline.png" width = "600" alt="实验时间线"/>
+
+## 数据预处理
+运行 `data_preprocess.py`
+
+## 数据模型训练
+运行 `data_training.py`

@@ -159,3 +159,28 @@ class DataRW:
             df_back.to_csv(save_file_path_back, mode='a', index=None)
         else:
             df_back.to_csv(save_file_path_back, mode='a', index=None, header=False)
+
+    def processed_data_reading(file_path):
+            datas = pd.read_csv(file_path, encoding='gbk', on_bad_lines='skip')
+            dataColumn = datas.columns.to_list()
+            # 各所需数据的表头
+            thickness_average_index = dataColumn.index("thickness_average")
+            speed_index = dataColumn.index("speed")
+            gapDR_index = dataColumn.index("gapDR")
+            gapOP_index = dataColumn.index("gapOP")
+            MES_pressureDR_index = dataColumn.index("MES_pressureDR")
+            MES_pressureOP_index = dataColumn.index("MES_pressureOP")
+            thickness_average_second_index = dataColumn.index("thickness_average_second")
+            time_gap_index = dataColumn.index("time_gap")
+            # 各所需数据表头的数据
+            thickness_average = datas[dataColumn[thickness_average_index]].values
+            speed = datas[dataColumn[speed_index]].values
+            gapDR = datas[dataColumn[gapDR_index]].values
+            gapOP = datas[dataColumn[gapOP_index]].values
+            MES_pressureDR = datas[dataColumn[MES_pressureDR_index]].values
+            MES_pressureOP = datas[dataColumn[MES_pressureOP_index]].values
+            thickness_average_second = datas[dataColumn[thickness_average_second_index]].values
+            time_gap = datas[dataColumn[time_gap_index]].values
+            # 返回一个二维列表
+            return [thickness_average, speed, gapDR, gapOP, MES_pressureDR, 
+                    MES_pressureOP, thickness_average_second, time_gap]

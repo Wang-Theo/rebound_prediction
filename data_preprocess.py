@@ -2,7 +2,6 @@ import pandas as pd
 import math
 
 import data_rw
-import data_struct
 import data_align
 import data_path
 
@@ -62,6 +61,7 @@ if __name__ == '__main__':
     data_align.DataAlign.thick_first_second(thickness_datas_first_1431, data_path.filepath_thick_second_1431, 3000.0, data_path.filepath_thick_processed_all, 48.0)
     data_align.DataAlign.thick_first_second(thickness_datas_first_1432, data_path.filepath_thick_second_1432, 15000.0, data_path.filepath_thick_processed_all, 24.0)
 
+    # 3. 将对齐后的数据分卷尾卷首保存
     datarw.data_writing_head_back(processed_data_1912, data_path.filepath_thick_processed_head, data_path.filepath_thick_processed_back)
     datarw.data_writing_head_back(processed_data_0942, data_path.filepath_thick_processed_head, data_path.filepath_thick_processed_back)
     datarw.data_writing_head_back(processed_data_1221, data_path.filepath_thick_processed_head, data_path.filepath_thick_processed_back)
