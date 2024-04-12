@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from sklearn import model_selection
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.feature_selection import SelectKBest,f_regression
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import r2_score
+from sklearn import metrics
+from sklearn.model_selection import cross_val_score
 
 import learning_model
 import data_path
@@ -26,40 +26,40 @@ if __name__ == '__main__':
     # learning_model.LearningModel.correlation_analysis(data_path.filepath_thick_processed_head, '_head')
     # learning_model.LearningModel.correlation_analysis(data_path.filepath_thick_processed_back, '_back')
 
-    # 数据训练
+    # 数据集
     head_datas = pd.read_csv(data_path.filepath_thick_processed_head, encoding='gbk', on_bad_lines='skip')
     back_datas = pd.read_csv(data_path.filepath_thick_processed_back, encoding='gbk', on_bad_lines='skip')
-    # 对所有自变量数据作标准化处理
-    transfer = MinMaxScaler(feature_range=(0, 1))
-    head_datas_scaler = pd.DataFrame(transfer.fit_transform(head_datas[['thickness_average','speed','gapDR','gapOP',
-                                              "MES_pressureDR", "MES_pressureOP"]]))
-    back_datas_scaler = pd.DataFrame(transfer.fit_transform(back_datas[['thickness_average','speed','gapDR','gapOP',
-                                              "MES_pressureDR", "MES_pressureOP"]]))
-    head_datas_scaler = np.append(head_datas_scaler,head_datas[['time_gap']],axis=1)
-    back_datas_scaler = np.append(back_datas_scaler,back_datas[['time_gap']],axis=1)
-    # 拆分训练集和测试集
-    X_train, X_test = model_selection.train_test_split(head_datas_scaler, 
-                                                        test_size = 0.25, random_state = 100)
-    y_train, y_test = model_selection.train_test_split(head_datas[['thickness_average_second']], 
-                                                        test_size = 0.25, random_state = 100)
-
-    # 设置待测试的不同k值
-    #训练
-    kNN_reg = neighbors.KNeighborsRegressor()
-    kNN_reg.fit(X_train, y_train)
-    #预测
-    y_pred = kNN_reg.predict(X_test)
-
-
+    # kNN模型训练
+    y_test_head, y_pred_head, k_best_head, kfold_score_head = learning_model.LearningModel.knn_training(head_datas)
+    y_test_back, y_pred_back, k_best_back, kfold_score_back = learning_model.LearningModel.knn_training(back_datas)
     # 评价
-    print("均方差：", np.sqrt(mean_squared_error(y_test, y_pred))) #计算均方差根判断效果
-    print("均方误差（MSE）：", r2_score(y_test,y_pred)) #计算均方误差（MSE）回归损失，越接近于1拟合效果越好
-
+    print("头部预测指标结果：") # 前1000米
+    print("k:", k_best_head)
+    print("R_2:", metrics.r2_score(y_test_head,y_pred_head))
+    print("MAE:", metrics.mean_absolute_error(y_test_head, y_pred_head))
+    print("交叉验证kfold MAE:", kfold_score_head)
+    print("\n")
+    print("尾部预测指标结果：")
+    print("k:", k_best_back)
+    print("R_2:", metrics.r2_score(y_test_back,y_pred_back))
+    print("MAE:", metrics.mean_absolute_error(y_test_back, y_pred_back))
+    print("交叉验证kfold MAE:", kfold_score_back)
     #绘图展示预测效果
-    y_pred.sort()
-    y_test.values.sort()
-    x = np.arange(1,len(y_pred)+1)
-    Pplot = plt.scatter(x,y_pred)
-    Tplot = plt.scatter(x,y_test)
-    plt.legend(handles=[Pplot,Tplot],labels=['y_pred','y_test'],linestyle='-')
+    plt.subplot(2, 1, 1)
+    plt.title("Head Part Prediction")
+    y_pred_head.sort()
+    y_test_head.values.sort()
+    x = np.arange(1,(len(y_pred_head)+1))
+    plt.plot(x, y_test_head, 'r', label='y_test')
+    plt.plot(x, y_pred_head, 'b', label='y_pred')
+    plt.legend()
+
+    plt.subplot(2, 1, 2)
+    plt.title("Back Part Prediction")
+    y_pred_back.sort()
+    y_test_back.values.sort()
+    x = np.arange(1,(len(y_pred_back)+1))
+    plt.plot(x, y_test_back, 'r', label='y_test')
+    plt.plot(x, y_pred_back, 'b', label='y_pred')
+    plt.legend()
     plt.show()
