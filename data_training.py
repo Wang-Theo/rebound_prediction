@@ -1,16 +1,10 @@
 import pandas as pd
 import numpy as np
-from sklearn import neighbors
 import matplotlib.pyplot as plt
-from sklearn import model_selection
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.feature_selection import SelectKBest,f_regression
 from sklearn import metrics
-from sklearn.model_selection import cross_val_score
 
 import learning_model
 import data_path
-import data_rw
 
 if __name__ == '__main__':
     # 相关性分析
