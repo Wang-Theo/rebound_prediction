@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn import model_selection
 from sklearn import neighbors
 from sklearn import metrics
+import joblib
 
 import data_path
 class LearningModel:
@@ -38,7 +39,7 @@ class LearningModel:
                                     cv=5, scoring = "neg_mean_absolute_error")
         return kfold_head
 
-    def knn_training(datas):
+    def knn_training(datas, name):
         # 对所有自变量数据作标准化处理
         transfer = MinMaxScaler(feature_range=(0, 1))
         datas_scaler = pd.DataFrame(transfer.fit_transform(datas[['thickness_average','speed','gapDR','gapOP',
@@ -81,6 +82,7 @@ class LearningModel:
         k_best = max_index + 1
         kNN_reg_best = neighbors.KNeighborsRegressor(k_best)
         kNN_reg_best.fit(X_train, y_train)
+        joblib.dump(kNN_reg_best, "./trained_models/" + name + "_trained_model.m")
         #预测
         y_pred = kNN_reg_best.predict(X_test)
         #交叉验证

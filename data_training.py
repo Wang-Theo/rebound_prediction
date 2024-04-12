@@ -30,8 +30,8 @@ if __name__ == '__main__':
     head_datas = pd.read_csv(data_path.filepath_thick_processed_head, encoding='gbk', on_bad_lines='skip')
     back_datas = pd.read_csv(data_path.filepath_thick_processed_back, encoding='gbk', on_bad_lines='skip')
     # kNN模型训练
-    y_test_head, y_pred_head, k_best_head, kfold_score_head = learning_model.LearningModel.knn_training(head_datas)
-    y_test_back, y_pred_back, k_best_back, kfold_score_back = learning_model.LearningModel.knn_training(back_datas)
+    y_test_head, y_pred_head, k_best_head, kfold_score_head = learning_model.LearningModel.knn_training(head_datas, "head")
+    y_test_back, y_pred_back, k_best_back, kfold_score_back = learning_model.LearningModel.knn_training(back_datas, "back")
     # 评价
     print("头部预测指标结果：") # 前1000米
     print("k:", k_best_head)
