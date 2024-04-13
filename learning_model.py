@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn import model_selection
 from sklearn import neighbors
 from sklearn import metrics
+from sklearn.linear_model import LinearRegression
 import joblib
 
 import data_path
@@ -78,13 +79,32 @@ class LearningModel:
             if R2s[i] > max_elem:
                 max_elem = R2s[i]
                 max_index = i
-                    #训练
+        # 训练
         k_best = max_index + 1
         kNN_reg_best = neighbors.KNeighborsRegressor(k_best)
         kNN_reg_best.fit(X_train, y_train)
-        joblib.dump(kNN_reg_best, "./trained_models/" + name + "_trained_model.m")
-        #预测
+        joblib.dump(kNN_reg_best, "./trained_models/" + name + "_knn_trained_model.m")
+        # 预测
         y_pred = kNN_reg_best.predict(X_test)
-        #交叉验证
+        # 交叉验证
         kfold_score = -LearningModel.kfold_val_score(kNN_reg_best, X_train, y_train)
         return y_test, y_pred, k_best, kfold_score
+    
+    def linear_regression_training(datas, name):
+        # 对所有自变量数据作标准化处理
+        transfer = MinMaxScaler(feature_range=(0, 1))
+        datas_scaler = pd.DataFrame(transfer.fit_transform(datas[['thickness_average','speed','gapDR','gapOP',
+                                                "MES_pressureDR", "MES_pressureOP"]]))
+        X = np.append(datas_scaler,datas[['time_gap']],axis=1)
+        Y = datas[['thickness_average_second']]
+        # 拆分训练集和测试集
+        X_train, X_test = model_selection.train_test_split(X, test_size = 0.25, random_state = 6000)
+        y_train, y_test = model_selection.train_test_split(Y, test_size = 0.25, random_state = 6000)
+        # 训练
+        linear_reg = LinearRegression(fit_intercept=True).fit(X_train,y_train)
+        joblib.dump(linear_reg, "./trained_models/" + name + "_linear_trained_model.m")
+        # 预测
+        y_pred = linear_reg.predict(X_test)
+        # 交叉验证
+        kfold_score = -LearningModel.kfold_val_score(linear_reg, X_train, y_train)
+        return y_test, y_pred, kfold_score
